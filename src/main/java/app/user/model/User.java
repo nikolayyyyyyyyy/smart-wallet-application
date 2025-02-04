@@ -28,7 +28,7 @@ public class User {
 
     private String profilePicture;
 
-    @Column(nullable = false,unique = true)
+    @Column(unique = true)
     private String email;
 
     @Column(nullable = false)
@@ -51,9 +51,9 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime updatedOn;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner",fetch = FetchType.EAGER)
     private List<Subscription> subscriptions;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner",fetch = FetchType.EAGER)
     private List<Wallet> wallets;
 }

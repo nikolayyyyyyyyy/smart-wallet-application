@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -36,8 +37,12 @@ public class Subscription {
     private boolean renewalAllowed;
 
     @Column(nullable = false)
-    private boolean createdOn;
+    private LocalDateTime createdOn;
 
     @Column(nullable = false)
-    private boolean completedOn;
+    private LocalDateTime completedOn;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private SubscriptionPeriod period;
 }
