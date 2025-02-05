@@ -1,15 +1,15 @@
 package app.user.service;
-
 import app.exception.DomainException;
 import app.subscription.service.SubscriptionService;
+import app.user.model.LoginRequest;
 import app.user.model.RegisterRequest;
 import app.user.model.User;
 import app.user.model.UserRole;
 import app.user.repository.UserRepository;
 import app.wallet.service.WalletService;
+import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 
 @Service
@@ -29,6 +29,7 @@ public class UserService {
         this.subscriptionService = subscriptionService;
     }
 
+    @Transactional
     public User register(RegisterRequest registerRequest){
         if(this.userRepository.findByUsername(registerRequest.getUsername()) != null){
 
@@ -51,4 +52,38 @@ public class UserService {
 
         return user;
     }
+
+    public User login(LoginRequest loginRequest){
+        if(this.userRepository.findByUsername(loginRequest.getUsername()) != null){
+
+            throw new DomainException("Username or password not correct!");
+        }
+
+        User user = this.userRepository.findByUsername(loginRequest.getUsername());
+
+        if(!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())){
+
+            throw new DomainException("Username or password not correct");
+        }
+
+        return user;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
